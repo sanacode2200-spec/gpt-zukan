@@ -1,0 +1,218 @@
+:root {
+  --bg: #0e1116;
+  --panel: #171b22;
+  --panel-2: #1f242d;
+  --border: #2a313c;
+  --text: #e6e9ef;
+  --muted: #9aa4b2;
+  --accent: #6ea8fe;
+  --accent-2: #7ee787;
+  --warn: #e3b341;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    system-ui, -apple-system, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP',
+    Meiryo, sans-serif;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent);
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 20px 80px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 8px 0 4px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin: 0 0 20px;
+  font-size: 14px;
+}
+
+/* プライバシーバナー */
+.privacy-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: linear-gradient(180deg, #16241a, #131a16);
+  border: 1px solid #2c4a36;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+}
+.privacy-banner .badge {
+  font-size: 18px;
+  line-height: 1.2;
+}
+.privacy-banner .text {
+  font-size: 13px;
+}
+.privacy-banner .text strong {
+  color: var(--accent-2);
+}
+.privacy-banner .text .sub {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ドロップゾーン */
+.dropzone {
+  border: 2px dashed var(--border);
+  border-radius: 16px;
+  padding: 44px 24px;
+  text-align: center;
+  background: var(--panel);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+.dropzone.drag {
+  border-color: var(--accent);
+  background: var(--panel-2);
+}
+.dropzone .big {
+  font-size: 16px;
+  font-weight: 600;
+}
+.dropzone .small {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+.dropzone .note {
+  color: var(--accent-2);
+  font-size: 12px;
+  margin-top: 14px;
+}
+.dropzone input {
+  display: none;
+}
+
+.status {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.status.error {
+  color: #ff7b72;
+}
+
+/* メトリクスグリッド */
+.metrics-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 28px 0 4px;
+}
+.metrics-head h2 {
+  font-size: 18px;
+  margin: 0;
+}
+.metrics-head .meta {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+}
+.card .layer-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-2);
+  background: #15241b;
+  border: 1px solid #2c4a36;
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-bottom: 10px;
+}
+.card .label {
+  font-size: 13px;
+  color: var(--muted);
+}
+.card .value {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 4px 0;
+}
+.card .value .unit {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-left: 4px;
+}
+.card .caption {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* テーマバー */
+.theme-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+  font-size: 13px;
+}
+.theme-row .name {
+  width: 72px;
+  flex: none;
+}
+.theme-row .bar {
+  flex: 1;
+  height: 10px;
+  border-radius: 6px;
+  background: var(--panel-2);
+  overflow: hidden;
+}
+.theme-row .bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.theme-row .pct {
+  width: 56px;
+  text-align: right;
+  flex: none;
+  color: var(--muted);
+}
+
+.footer-note {
+  margin-top: 40px;
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}

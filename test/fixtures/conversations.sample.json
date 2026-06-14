@@ -1,0 +1,264 @@
+[
+  {
+    "id": "conv-0001-code-js",
+    "title": "JSのデバッグ手伝って",
+    "create_time": 1704067200.0,
+    "update_time": 1704070800.0,
+    "current_node": "c1-n4",
+    "mapping": {
+      "c1-root": {
+        "id": "c1-root",
+        "parent": null,
+        "children": ["c1-n0"],
+        "message": null
+      },
+      "c1-n0": {
+        "id": "c1-n0",
+        "parent": "c1-root",
+        "children": ["c1-n1"],
+        "message": {
+          "id": "c1-n0",
+          "author": { "role": "system" },
+          "content": { "content_type": "text", "parts": [""] },
+          "create_time": 1704067200.0,
+          "metadata": {
+            "is_user_system_message": true,
+            "user_system_message": "あなたは簡潔に答えるエンジニアです。"
+          }
+        }
+      },
+      "c1-n1": {
+        "id": "c1-n1",
+        "parent": "c1-n0",
+        "children": ["c1-n2"],
+        "message": {
+          "id": "c1-n1",
+          "author": { "role": "user" },
+          "content": { "content_type": "text", "parts": ["このJSの関数を直して。バグってる。"] },
+          "create_time": 1704067260.0
+        }
+      },
+      "c1-n2": {
+        "id": "c1-n2",
+        "parent": "c1-n1",
+        "children": ["c1-n3b", "c1-n3"],
+        "message": {
+          "id": "c1-n2",
+          "author": { "role": "assistant" },
+          "content": { "content_type": "text", "parts": ["こうですね。const fix = ()=>{...}"] },
+          "create_time": 1704067320.0
+        }
+      },
+      "c1-n3b": {
+        "id": "c1-n3b",
+        "parent": "c1-n2",
+        "children": [],
+        "message": {
+          "id": "c1-n3b",
+          "author": { "role": "user" },
+          "content": { "content_type": "text", "parts": ["これでいい、ありがとう。"] },
+          "create_time": 1704067380.0
+        }
+      },
+      "c1-n3": {
+        "id": "c1-n3",
+        "parent": "c1-n2",
+        "children": ["c1-n4"],
+        "message": {
+          "id": "c1-n3",
+          "author": { "role": "user" },
+          "content": { "content_type": "text", "parts": ["違う、そうじゃなくて。やり直して。"] },
+          "create_time": 1704067440.0
+        }
+      },
+      "c1-n4": {
+        "id": "c1-n4",
+        "parent": "c1-n3",
+        "children": [],
+        "message": {
+          "id": "c1-n4",
+          "author": { "role": "assistant" },
+          "content": { "content_type": "text", "parts": ["失礼しました。修正版です。"] },
+          "create_time": 1704067500.0
+        }
+      }
+    }
+  },
+  {
+    "id": "conv-0002-work-en",
+    "title": "Draft a status update",
+    "create_time": 1709251200.0,
+    "update_time": 1709254800.0,
+    "current_node": "c2-n3",
+    "mapping": {
+      "c2-root": {
+        "id": "c2-root",
+        "parent": null,
+        "children": ["c2-n1"],
+        "message": null
+      },
+      "c2-n1": {
+        "id": "c2-n1",
+        "parent": "c2-root",
+        "children": ["c2-n2"],
+        "message": {
+          "id": "c2-n1",
+          "author": { "role": "user" },
+          "content": {
+            "content_type": "text",
+            "parts": ["Write a short weekly status update for my manager."]
+          },
+          "create_time": 1709251260.0
+        }
+      },
+      "c2-n2": {
+        "id": "c2-n2",
+        "parent": "c2-n1",
+        "children": ["c2-n3"],
+        "message": {
+          "id": "c2-n2",
+          "author": { "role": "assistant" },
+          "content": { "content_type": "text", "parts": ["Here is a concise update: ..."] },
+          "create_time": 1709251320.0
+        }
+      },
+      "c2-n3": {
+        "id": "c2-n3",
+        "parent": "c2-n2",
+        "children": [],
+        "message": {
+          "id": "c2-n3",
+          "author": { "role": "user" },
+          "content": { "content_type": "text", "parts": ["Make it more formal please."] },
+          "create_time": 1709251380.0
+        }
+      }
+    }
+  },
+  {
+    "id": "conv-0003-health-ja",
+    "title": "肩こり相談",
+    "create_time": 1714521600.0,
+    "update_time": 1714525200.0,
+    "current_node": "c3-n2",
+    "mapping": {
+      "c3-root": {
+        "id": "c3-root",
+        "parent": null,
+        "children": ["c3-n1"],
+        "message": null
+      },
+      "c3-n1": {
+        "id": "c3-n1",
+        "parent": "c3-root",
+        "children": ["c3-n2"],
+        "message": {
+          "id": "c3-n1",
+          "author": { "role": "user" },
+          "content": { "content_type": "text", "parts": ["最近肩こりと頭痛がひどい。原因を教えて。"] },
+          "create_time": 1714521660.0
+        }
+      },
+      "c3-n2": {
+        "id": "c3-n2",
+        "parent": "c3-n1",
+        "children": [],
+        "message": {
+          "id": "c3-n2",
+          "author": { "role": "assistant" },
+          "content": {
+            "content_type": "text",
+            "parts": ["医師ではありませんが、姿勢や睡眠が要因かもしれません。"]
+          },
+          "create_time": 1714521720.0
+        }
+      }
+    }
+  },
+  {
+    "id": "conv-0004-chat-multimodal",
+    "title": "この画像なに？",
+    "create_time": 1717200000.0,
+    "update_time": 1717203600.0,
+    "current_node": "c4-n2",
+    "mapping": {
+      "c4-root": {
+        "id": "c4-root",
+        "parent": null,
+        "children": ["c4-n1"],
+        "message": null
+      },
+      "c4-n1": {
+        "id": "c4-n1",
+        "parent": "c4-root",
+        "children": ["c4-n2"],
+        "message": {
+          "id": "c4-n1",
+          "author": { "role": "user" },
+          "content": {
+            "content_type": "multimodal_text",
+            "parts": [
+              {
+                "content_type": "image_asset_pointer",
+                "asset_pointer": "file-service://file-AbC123",
+                "size_bytes": 482910,
+                "width": 1024,
+                "height": 768
+              },
+              "これ何の花か分かる？暇つぶしに聞いてるだけ。"
+            ]
+          },
+          "create_time": 1717200060.0
+        }
+      },
+      "c4-n2": {
+        "id": "c4-n2",
+        "parent": "c4-n1",
+        "children": [],
+        "message": {
+          "id": "c4-n2",
+          "author": { "role": "assistant" },
+          "content": { "content_type": "text", "parts": ["アジサイに見えますね。"] },
+          "create_time": 1717200120.0
+        }
+      }
+    }
+  },
+  {
+    "id": "conv-0005-code-en",
+    "title": "Regex help",
+    "create_time": 1718323200.0,
+    "update_time": 1718326800.0,
+    "current_node": "c5-n2",
+    "mapping": {
+      "c5-root": {
+        "id": "c5-root",
+        "parent": null,
+        "children": ["c5-n1"],
+        "message": null
+      },
+      "c5-n1": {
+        "id": "c5-n1",
+        "parent": "c5-root",
+        "children": ["c5-n2"],
+        "message": {
+          "id": "c5-n1",
+          "author": { "role": "user" },
+          "content": { "content_type": "text", "parts": ["Write a regex to match email addresses."] },
+          "create_time": 1718323260.0
+        }
+      },
+      "c5-n2": {
+        "id": "c5-n2",
+        "parent": "c5-n1",
+        "children": [],
+        "message": {
+          "id": "c5-n2",
+          "author": { "role": "assistant" },
+          "content": { "content_type": "text", "parts": ["Try: /^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/"] },
+          "create_time": 1718323320.0
+        }
+      }
+    }
+  }
+]
