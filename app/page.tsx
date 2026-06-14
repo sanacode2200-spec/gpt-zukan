@@ -7,6 +7,8 @@ import MetricCard from '@/components/MetricCard';
 import { extractConversationsJson, decodeUtf8 } from '@/lib/zip';
 import { parseExport } from '@/lib/parse';
 import { computeMetrics, type MetricsResult } from '@/lib/metrics/index';
+import { deriveUserType } from '@/lib/typeName';
+import ZukanCard from '@/components/ZukanCard';
 import { LAYER_LABEL } from '@/lib/layer';
 
 type Status = 'idle' | 'working' | 'done' | 'error';
@@ -102,6 +104,7 @@ export default function Home() {
 
 function Metrics({ metrics }: { metrics: MetricsResult }) {
   const { gptAge, instructionDensity, correction, themes } = metrics;
+  const userType = deriveUserType(metrics);
   const ageDate = gptAge.firstDateISO
     ? gptAge.firstDateISO.slice(0, 10)
     : '不明';
@@ -109,11 +112,17 @@ function Metrics({ metrics }: { metrics: MetricsResult }) {
   return (
     <section>
       <div className="metrics-head">
-        <h2>解析結果</h2>
+        <h2>あなたのタイプ</h2>
         <span className="meta">
           会話 {metrics.conversationCount} 件 / ユーザー発話{' '}
           {metrics.userMessageCount} 件
         </span>
+      </div>
+
+      <ZukanCard metrics={metrics} userType={userType} />
+
+      <div className="metrics-head">
+        <h2 style={{ fontSize: 16 }}>内訳（第1層 実測）</h2>
       </div>
 
       <div className="grid">
