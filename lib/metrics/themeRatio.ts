@@ -89,22 +89,34 @@ function isAscii(s: string): boolean {
   return /^[\x00-\x7f]+$/.test(s);
 }
 
+// モジュール読み込み時に1回だけコンパイルする（会話ごと・キーワードごとの RegExp 生成を避ける）。
+// ASCII キーワードはテーマ単位で1本の結合正規表現に、日本語キーワードは部分一致リストにする。
+interface CompiledTheme {
+  theme: string;
+  priority: number;
+  asciiRe: RegExp | null;
+  jpKeywords: string[];
+}
+
+const COMPILED: CompiledTheme[] = TAXONOMY.map((def) => {
+  const ascii = def.keywords.filter(isAscii).map(escapeRegExp);
+  return {
+    theme: def.theme,
+    priority: THEME_PRIORITY.indexOf(def.theme),
+    asciiRe: ascii.length ? new RegExp(`\\b(?:${ascii.join('|')})\\b`, 'g') : null,
+    jpKeywords: def.keywords.filter((k) => !isAscii(k)),
+  };
+});
+
 // haystack（NFKC + lowercase 済み）内のキーワード出現数を数える。
-// ASCII キーワードは語境界一致、日本語は部分一致。
-function scoreTheme(haystack: string, keywords: string[]): number {
-  let score = 0;
-  for (const kw of keywords) {
-    if (isAscii(kw)) {
-      const re = new RegExp(`\\b${escapeRegExp(kw)}\\b`, 'g');
-      score += haystack.match(re)?.length ?? 0;
-    } else {
-      let idx = 0;
-      let count = 0;
-      while ((idx = haystack.indexOf(kw, idx)) !== -1) {
-        count++;
-        idx += kw.length;
-      }
-      score += count;
+// ASCII は語境界一致、日本語は部分一致。
+function scoreTheme(haystack: string, def: CompiledTheme): number {
+  let score = def.asciiRe ? haystack.match(def.asciiRe)?.length ?? 0 : 0;
+  for (const kw of def.jpKeywords) {
+    let idx = 0;
+    while ((idx = haystack.indexOf(kw, idx)) !== -1) {
+      score++;
+      idx += kw.length;
     }
   }
   return score;
@@ -115,15 +127,14 @@ function classifyConversation(conv: LinearizedConversation): { theme: string; sc
   const haystack = stripCode(raw).normalize('NFKC').toLowerCase();
 
   let best = { theme: UNKNOWN_THEME, score: 0, priority: Infinity };
-  for (const def of TAXONOMY) {
-    const score = scoreTheme(haystack, def.keywords);
+  for (const def of COMPILED) {
+    const score = scoreTheme(haystack, def);
     if (score === 0) continue;
-    const priority = THEME_PRIORITY.indexOf(def.theme);
     if (
       score > best.score ||
-      (score === best.score && priority < best.priority)
+      (score === best.score && def.priority < best.priority)
     ) {
-      best = { theme: def.theme, score, priority };
+      best = { theme: def.theme, score, priority: def.priority };
     }
   }
   return { theme: best.theme, score: best.score };

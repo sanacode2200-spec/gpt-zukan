@@ -71,4 +71,9 @@ test('isCorrection: 初出依頼を誤検出しない', () => {
   // 「このJSの関数を直して」は初出の依頼であり修正要求ではない
   assert.equal(isCorrection('このJSの関数を直して。バグってる。'), false);
   assert.equal(isCorrection("No, that's wrong."), true);
+  // HIGH修正: 初出の対比依頼「AではなくB」は修正要求ではない
+  assert.equal(isCorrection('猫ではなく犬の画像を作って。'), false);
+  // 「おかしい」は出力参照を伴う場合のみ修正要求とみなす
+  assert.equal(isCorrection('答えがおかしい。'), true);
+  assert.equal(isCorrection('今日は天気がおかしいね。'), false);
 });

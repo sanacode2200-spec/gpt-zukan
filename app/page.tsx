@@ -7,6 +7,7 @@ import MetricCard from '@/components/MetricCard';
 import { extractConversationsJson, decodeUtf8 } from '@/lib/zip';
 import { parseExport } from '@/lib/parse';
 import { computeMetrics, type MetricsResult } from '@/lib/metrics/index';
+import { LAYER_LABEL } from '@/lib/layer';
 
 type Status = 'idle' | 'working' | 'done' | 'error';
 
@@ -17,6 +18,18 @@ function isZip(bytes: Uint8Array): boolean {
 
 function pct(x: number): string {
   return `${Math.round(x * 100)}%`;
+}
+
+// ライブラリの英語エラーをそのまま日本語 UI に出さない。原文は console に残す。
+function friendlyError(e: unknown): string {
+  const msg = e instanceof Error ? e.message : String(e);
+  if (/invalid zip|zip data|incorrect header|compress/i.test(msg)) {
+    return 'zip ファイルが壊れているか、対応していない形式です。ChatGPT のエクスポート zip を選んでください。';
+  }
+  if (/JSON|Unexpected (token|end|non-whitespace)/i.test(msg)) {
+    return 'conversations.json の形式が不正です。正しいエクスポートファイルか確認してください。';
+  }
+  return msg; // 自前の日本語メッセージ（会話が見つかりません 等）はそのまま表示
 }
 
 export default function Home() {
@@ -32,10 +45,16 @@ export default function Home() {
     setFileName(file.name);
     try {
       // すべてメモリ内。File は fetch/XHR に渡さない。
+      // NOTE(MVP既知のトレードオフ): 下の unzip→parse→computeMetrics は同期実行のため、
+      // 数百MB級の巨大エクスポートでは UI スレッドが数秒フリーズしうる。次フェーズで Web Worker
+      // へ移す（Worker 内処理もクライアント完結のままで、サーバー送信ゼロは損なわない）。
       const bytes = new Uint8Array(await file.arrayBuffer());
       const jsonText = isZip(bytes)
         ? decodeUtf8(extractConversationsJson(bytes))
         : decodeUtf8(bytes);
+      if (jsonText.trim() === '') {
+        throw new Error('ファイルが空です。conversations.json を含むエクスポートを選んでください。');
+      }
       const convs = parseExport(jsonText);
       if (convs.length === 0) {
         throw new Error(
@@ -45,7 +64,8 @@ export default function Home() {
       setMetrics(computeMetrics(convs));
       setStatus('done');
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      console.error(e); // 原文（英語）はデバッグ用にコンソールへ
+      setError(friendlyError(e));
       setStatus('error');
     }
   }
@@ -98,23 +118,27 @@ function Metrics({ metrics }: { metrics: MetricsResult }) {
 
       <div className="grid">
         <MetricCard
+          layer="measured"
           label="最初の会話からの経過"
           value={gptAge.ageDays !== null ? String(gptAge.ageDays) : '—'}
           unit="日"
           caption={`最初の会話: ${ageDate}（モデルが歳をとるのではなく、あなたの利用歴です）`}
         />
         <MetricCard
+          layer="measured"
           label="指示密度（平均トークン数 / メッセージ）"
           value={instructionDensity.avgTokensPerUserMessage.toFixed(1)}
           unit="トークン"
           caption="単位は形態素＋語。1メッセージあたりの情報量の目安です。"
         />
         <MetricCard
+          layer="measured"
           label="指示的トーン（命令形・依頼の比率）"
           value={pct(instructionDensity.imperativeRatio)}
           caption={`ユーザー発話 ${instructionDensity.userMessageCount} 件中 ${instructionDensity.imperativeCount} 件。ヒューリスティック検出の参考値。`}
         />
         <MetricCard
+          layer="measured"
           label="修正要求率（やり直し・修正のサイン）"
           value={pct(correction.rate)}
           caption={`${correction.correctionCount} 件で「違う／やり直して」等を検出。参考値。`}
@@ -126,6 +150,7 @@ function Metrics({ metrics }: { metrics: MetricsResult }) {
         <span className="meta">キーワード分類（簡易）</span>
       </div>
       <div className="card">
+        <span className="layer-tag">{LAYER_LABEL.measured}</span>
         {themes.distribution.map((d) => (
           <div className="theme-row" key={d.theme}>
             <span className="name">{d.theme}</span>
